@@ -2,9 +2,9 @@
 
 Decentralized application to allow artists to post music and make it available for download/purchase/free(w/ optional donation).
 
-The **overall goal** of this application is to provide a way for decentralized audio file storage & streaming. Consumers of content can download/stream audio; producers of content can choose certain rules for consumers to abide by to download/stream the audio. For example, an uploader can allow an audio file to be streamed for free and/or be downloaded with a specified fee, etc.
+The **overall goal** of this application is to facilitate decentralized audio file consumption. Consumers of content can download/stream audio; producers of content (uploaders) can choose certain rules for consumers to abide by to download/stream the audio. For example, an uploader can allow an audio file to be streamed for free and/or be downloaded for a specified fee, etc.
 
-The **initial goal** is to create a ___proof-of-concept___ smart contract that can allow for the designation of rules that define access to an audio file.
+The **initial goal** is to create a ___proof-of-concept___ smart contract that can allow users to download/stream uploaded audio files and to provide the ability to donate ether to uploaders.
 
 **The initial goal does not take into consideration the reality of some uploaders uploading audio files they either:**
   - **a) do not own**
