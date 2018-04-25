@@ -11,6 +11,7 @@ contract AudioTrackFactory {
         string creator;
         string coverImageLocator;
         string audioFileLocator;
+        bool canDownload;
     }
 
     event AudioTrackCreated(uint trackId);    
@@ -26,7 +27,8 @@ contract AudioTrackFactory {
         string _description,
         string _creator,
         string _coverImageLocator, 
-        string _audioFileLocator
+        string _audioFileLocator,
+        bool _canDownload
     ) public {
         // create new audio track
         AudioTrack memory track = AudioTrack(
@@ -34,7 +36,8 @@ contract AudioTrackFactory {
             _description,
             _creator,
             _coverImageLocator,
-            _audioFileLocator
+            _audioFileLocator,
+            _canDownload
         );
 
         // Push newly created audio track onto tracks array and
