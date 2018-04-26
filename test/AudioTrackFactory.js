@@ -8,6 +8,7 @@ contract('AudioTrackFactory', function(accounts) {
     var coverImageLocator = 'some/path/to/image';
     var audioFileLocator = 'some/path/to/file';
     var canDownload = false;
+    var downloadPrice = 0.001;
 
     var contractInstance;
     return AudioTrackFactory.deployed().then(function(instance) {
@@ -19,6 +20,7 @@ contract('AudioTrackFactory', function(accounts) {
         coverImageLocator,
         audioFileLocator,
         canDownload,
+        web3._extend.utils.toWei(downloadPrice),
         { from: accounts[0] }
       );
     }).then(function(result) {
@@ -39,6 +41,8 @@ contract('AudioTrackFactory', function(accounts) {
       var COVER_IMAGE_LOCATOR = 3;
       var AUDIO_FILE_LOCATOR = 4;
       var CAN_DOWNLOAD = 5;
+      var DOWNLOAD_PRICE = 6;
+
 
       // ensure data for fields on created audio track
       // record match the data provided during creation.
@@ -48,6 +52,7 @@ contract('AudioTrackFactory', function(accounts) {
       assert.equal(track[COVER_IMAGE_LOCATOR], coverImageLocator);
       assert.equal(track[AUDIO_FILE_LOCATOR], audioFileLocator);
       assert.equal(track[CAN_DOWNLOAD], canDownload);
+      assert.equal(web3._extend.utils.fromWei(track[DOWNLOAD_PRICE]).toNumber(), downloadPrice);
     });
   });
 });

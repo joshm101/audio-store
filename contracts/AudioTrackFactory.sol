@@ -12,6 +12,7 @@ contract AudioTrackFactory {
         string coverImageLocator;
         string audioFileLocator;
         bool canDownload;
+        uint downloadPrice;
     }
 
     event AudioTrackCreated(uint trackId);    
@@ -21,14 +22,22 @@ contract AudioTrackFactory {
     mapping (uint => address) public trackToOwner;
     mapping (address => uint) public ownerTrackCount;
 
-    /// Creates an audio track record
+    /// @notice Creates an audio track record
+    /// @param _name The name of the audio track
+    /// @param _description The audio track's description
+    /// @param _creator The creator/producer/uploader
+    /// @param _coverImageLocator Image file locator/path
+    /// @param _audioFileLocator Audio file locator/path
+    /// @param _canDownload Whether or not the file can be downloaded
+    /// @param _downloadPrice Price in ether to be allowed to download file
     function createAudioTrack(
         string _name, 
         string _description,
         string _creator,
         string _coverImageLocator, 
         string _audioFileLocator,
-        bool _canDownload
+        bool _canDownload,
+        uint _downloadPrice
     ) public {
         // create new audio track
         AudioTrack memory track = AudioTrack(
@@ -37,7 +46,8 @@ contract AudioTrackFactory {
             _creator,
             _coverImageLocator,
             _audioFileLocator,
-            _canDownload
+            _canDownload,
+            _downloadPrice
         );
 
         // Push newly created audio track onto tracks array and
