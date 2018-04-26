@@ -12,6 +12,7 @@ contract AudioTrackFactory {
         string coverImageLocator;
         string audioFileLocator;
         bool canDownload;
+        bool canStream;
         uint downloadPrice;
     }
 
@@ -29,6 +30,7 @@ contract AudioTrackFactory {
     /// @param _coverImageLocator Image file locator/path
     /// @param _audioFileLocator Audio file locator/path
     /// @param _canDownload Whether or not the file can be downloaded
+    /// @param _canStream Whether or not the file can be streamed
     /// @param _downloadPrice Price in ether to be allowed to download file
     function createAudioTrack(
         string _name, 
@@ -37,6 +39,7 @@ contract AudioTrackFactory {
         string _coverImageLocator, 
         string _audioFileLocator,
         bool _canDownload,
+        bool _canStream,
         uint _downloadPrice
     ) public {
         // create new audio track
@@ -47,6 +50,7 @@ contract AudioTrackFactory {
             _coverImageLocator,
             _audioFileLocator,
             _canDownload,
+            _canStream,
             _downloadPrice
         );
 

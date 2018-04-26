@@ -8,6 +8,7 @@ contract('AudioTrackFactory', function(accounts) {
     var coverImageLocator = 'some/path/to/image';
     var audioFileLocator = 'some/path/to/file';
     var canDownload = false;
+    var canStream = true;
     var downloadPrice = 0.001;
 
     var contractInstance;
@@ -20,6 +21,7 @@ contract('AudioTrackFactory', function(accounts) {
         coverImageLocator,
         audioFileLocator,
         canDownload,
+        canStream,
         web3._extend.utils.toWei(downloadPrice),
         { from: accounts[0] }
       );
@@ -41,7 +43,8 @@ contract('AudioTrackFactory', function(accounts) {
       var COVER_IMAGE_LOCATOR = 3;
       var AUDIO_FILE_LOCATOR = 4;
       var CAN_DOWNLOAD = 5;
-      var DOWNLOAD_PRICE = 6;
+      var CAN_STREAM = 6;
+      var DOWNLOAD_PRICE = 7;
 
 
       // ensure data for fields on created audio track
@@ -52,6 +55,7 @@ contract('AudioTrackFactory', function(accounts) {
       assert.equal(track[COVER_IMAGE_LOCATOR], coverImageLocator);
       assert.equal(track[AUDIO_FILE_LOCATOR], audioFileLocator);
       assert.equal(track[CAN_DOWNLOAD], canDownload);
+      assert.equal(track[CAN_STREAM], canStream);
       assert.equal(web3._extend.utils.fromWei(track[DOWNLOAD_PRICE]).toNumber(), downloadPrice);
     });
   });
