@@ -13,7 +13,7 @@ contract('AudioTrackConsumption', (accounts) => {
     const audioFileLocator = 'some/path/to/file';
     const canDownload = true;
     const canStream = true;
-    const downloadPrice = 0.001;
+    const downloadPrice = 10;
     const utils = web3._extend.utils;
     let trackId;
     let contractInstance;

@@ -21,7 +21,7 @@ contract AudioTrackConsumption is AudioTrackFactory {
         if (trackToOwner[trackId] == msg.sender) {
             return true;
         }
-        
+
         // get array of download purchasers associated with trackId.
         address[] storage downloadPurchasers = trackToDownloadPurchasers[trackId];
 
@@ -48,6 +48,9 @@ contract AudioTrackConsumption is AudioTrackFactory {
         AudioTrack storage track = tracks[trackId];
         uint downloadPrice = track.downloadPrice;
         require(msg.value >= downloadPrice);
+
+        address trackOwner = trackToOwner[trackId];
+        trackOwner.transfer(msg.value);
 
         // Requester paid the required amount of ether, add the
         // requester's address to the array of downloadPurchasers
