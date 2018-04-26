@@ -5,19 +5,20 @@ var AudioTrackConsumption = artifacts.require('AudioTrackConsumption');
  * AudioTrackFactory functionality as well as the
  * inheriting AudioTrackConsumption functionality.
  */
-contract('AudioTrackConsumption', function(accounts) {
-    var name = 'Test track';
-    var description = 'Test description'
-    var creator = 'Test creator';
-    var coverImageLocator = 'some/path/to/image';
-    var audioFileLocator = 'some/path/to/file';
-    var canDownload = true;
-    var canStream = true;
-    var downloadPrice = 0.001;
-    var trackId;
-    var contractInstance;
-  it('should create an audio track record', function() {
-    return AudioTrackConsumption.deployed().then(function(instance) {
+contract('AudioTrackConsumption', (accounts) => {
+    const name = 'Test track';
+    const description = 'Test description'
+    const creator = 'Test creator';
+    const coverImageLocator = 'some/path/to/image';
+    const audioFileLocator = 'some/path/to/file';
+    const canDownload = true;
+    const canStream = true;
+    const downloadPrice = 0.001;
+    const utils = web3._extend.utils;
+    let trackId;
+    let contractInstance;
+  it('should create an audio track record', () =>
+    AudioTrackConsumption.deployed().then((instance) => {
       contractInstance = instance;
       return contractInstance.createAudioTrack(
         name,
@@ -27,29 +28,33 @@ contract('AudioTrackConsumption', function(accounts) {
         audioFileLocator,
         canDownload,
         canStream,
-        web3._extend.utils.toWei(downloadPrice),
+        utils.toWei(downloadPrice),
         { from: accounts[0] }
       );
-    }).then(function(result) {
+    }).then((result) => {
       // determined via https://goo.gl/F8wjxL and console.logs
-      var audioTrackCreatedEvent = result.logs[0];
+      const audioTrackCreatedEvent = result.logs[0];
       trackId = audioTrackCreatedEvent.args.trackId.toNumber();
 
       return contractInstance.tracks.call(
         trackId,
         { from: accounts[0] }
       )
-    }).then(function(track) {
+    }).then((track) => {
       // track is an array, set index constants for
       // readability.
-      var NAME = 0;
-      var DESCRIPTION = 1;
-      var CREATOR = 2;
-      var COVER_IMAGE_LOCATOR = 3;
-      var AUDIO_FILE_LOCATOR = 4;
-      var CAN_DOWNLOAD = 5;
-      var CAN_STREAM = 6;
-      var DOWNLOAD_PRICE = 7;
+      const NAME = 0;
+      const DESCRIPTION = 1;
+      const CREATOR = 2;
+      const COVER_IMAGE_LOCATOR = 3;
+      const AUDIO_FILE_LOCATOR = 4;
+      const CAN_DOWNLOAD = 5;
+      const CAN_STREAM = 6;
+      const DOWNLOAD_PRICE = 7;
+
+      const setDownloadPrice = utils.fromWei(
+        track[DOWNLOAD_PRICE]
+      ).toNumber();
 
 
       // ensure data for fields on created audio track
@@ -61,41 +66,41 @@ contract('AudioTrackConsumption', function(accounts) {
       assert.equal(track[AUDIO_FILE_LOCATOR], audioFileLocator);
       assert.equal(track[CAN_DOWNLOAD], canDownload);
       assert.equal(track[CAN_STREAM], canStream);
-      assert.equal(web3._extend.utils.fromWei(track[DOWNLOAD_PRICE]).toNumber(), downloadPrice);
-    });
-  });
+      assert.equal(setDownloadPrice, downloadPrice);
+    })
+  );
   
-  it('allows the purchase of a valid track', function() {
+  it('allows the purchase of a valid track', () => {
     contractInstance.purchaseTrackDownload(
       trackId,
       {
         from: accounts[1],
-        value: web3._extend.utils.toWei(downloadPrice),
+        value: utils.toWei(downloadPrice),
       }
-    ).then(function(result) {
-      var audioTrackDownloadPurchasedEvent = result.logs[0];
-      var purchasedTrackId = audioTrackDownloadPurchasedEvent.args.trackId.toNumber();
+    ).then((result) => {
+      const audioTrackDownloadPurchasedEvent = result.logs[0];
+      const purchasedTrackId = audioTrackDownloadPurchasedEvent.args.trackId.toNumber();
       assert.equal(trackId, purchasedTrackId);
     });
   });
   
   it(
     'throws a revert error when required ether amount is not provided',
-    async function() {
-      var testFunction = async function() {
-        var caughtError;
+    async () => {
+      const testFunction = async () => {
+        let caughtError;
         try {
           await contractInstance.purchaseTrackDownload(
             trackId,
             {
               from: accounts[1],
-              value: web3._extend.utils.toWei(0.0001)
+              value: utils.toWei(0.0001)
             }
           )
         } catch (error) {
           caughtError = error;
         }
-        assert.throws(function() {
+        assert.throws(() => {
           if (caughtError) {
             throw caughtError; 
           }
@@ -105,13 +110,13 @@ contract('AudioTrackConsumption', function(accounts) {
     }
   );
 
-  it('calculates download privileges', function() {
+  it('calculates download privileges', () => {
     // Test request where requester does have privileges
     // to download a track because they have purchased it.
     contractInstance.canDownloadTrack.call(
       trackId,
       { from: accounts[1] }
-    ).then(function(result) {
+    ).then((result) => {
       assert.isTrue(result);
     });
 
@@ -120,7 +125,7 @@ contract('AudioTrackConsumption', function(accounts) {
     contractInstance.canDownloadTrack.call(
       trackId,
       { from: accounts[2] }
-    ).then(function(result) {
+    ).then((result) => {
       assert.isFalse(result);
     });
 
@@ -129,7 +134,7 @@ contract('AudioTrackConsumption', function(accounts) {
     contractInstance.canDownloadTrack.call(
       trackId,
       { from: accounts[0] }
-    ).then(function(result) {
+    ).then((result) => {
       assert.isTrue(result);
     });
   });
